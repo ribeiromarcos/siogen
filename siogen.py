@@ -72,39 +72,6 @@ def gen_deletions(par_dict):
     return rec_list
 
 
-# def gen_insertions_deletions(insertion_list, par_dict):
-#     '''
-#     Generate final record list with insertions and deletions
-#     '''
-#     # Shuffle record list
-#     random.shuffle(insertion_list)
-#     # List of insertions and deletions
-#     rec_list = []
-#     # List of current records (excluding deleted record)
-#     current_list = []
-#     # Group of insertions before a deletion
-#     group_len = par_dict[INS] / par_dict[DEL]
-#     # Process insertion list
-#     while len(insertion_list):
-#         # Copy a group of insertions to current list
-#         current_list += insertion_list[:group_len]
-#         # Copy a group of insertions to final list
-#         rec_list += insertion_list[:group_len]
-#         # Shufle current list
-#         random.shuffle(current_list)
-#         # Remove first record from current list
-#         rec = current_list.pop()
-#         # Create a copy of removed recod
-#         del_rec = rec.copy()
-#         # mark the record to be deleted
-#         del_rec['OP'] = '-'
-#         # Append deleted record into final list
-#         rec_list.append(del_rec)
-#         # Remove group of processed record from insertion list
-#         del insertion_list[:group_len]
-#     return rec_list
-
-
 def store_records(rec_list, par_dict):
     '''
     Store a record list in into file
