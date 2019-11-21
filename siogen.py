@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 # -*- coding: utf-8 -*-
 '''
 SIOgen: Simple Insert Delete Dataset Generator
@@ -55,7 +55,7 @@ def gen_deletions(par_dict):
     # List of records
     rec_list = []
     # Loop to create insertions
-    for _ in range(par_dict[INS]):
+    for _ in range(par_dict[DEL]):
         # New record
         new_record = {}
         # List of attributes
@@ -64,7 +64,7 @@ def gen_deletions(par_dict):
         for att in att_list:
             new_record[att] = 0
         # Overwrite the attribute key
-        new_record['A1'] = random.randint(0, par_dict[INS])
+        new_record['A1'] = random.randint(0, par_dict[DEL])
         # Deletion flag
         new_record['OP'] = '-'
         # Append record to list
@@ -77,14 +77,14 @@ def store_records(rec_list, par_dict):
     Store a record list in into file
     '''
     # Check if record list is empty
-    if not len(rec_list):
+    if not rec_list:
         return
     # Build attribute list including operation flag
     att_list = ['OP'] + \
         ['A' + str(number + 1) for number in range(par_dict[ATT])]
     # Open file
     out_file = open(par_dict[FILE], 'w')
-    # Create csv writer
+    # Create CSV writer
     out_write = csv.DictWriter(out_file, att_list)
     # Write file header
     out_write.writeheader()
