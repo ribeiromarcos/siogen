@@ -60,21 +60,29 @@ def gen_deletions(rec_list, keys_set, par_dict):
     '''
     Generate deletions
     '''
-    # List of records
-    rec_list = []
-    # Loop to create insertions
-    for _ in range(par_dict[INS]):
+    # Check if there are keys to delete
+    if par_dict[DELETE] == 0:
+        return
+    # Number of deletions
+    del_num = randint(1, par_dict[DELETE])
+    # Check if there are enough keys to delete
+    if del_num > len(keys_set):
+        return
+    # Compute keys to delete
+    key_list = list(keys_set)
+    shuffle(key_list)
+    del_list = key_list[:del_num]
+    par_dict[DELETE] -= del_num
+    # Loop to create deletions
+    for key in del_list:
         # New record
         new_record = {'OP': '-'}
         # List of attributes
         att_list = ['A' + str(number + 1) for number in range(par_dict[ATT])]
         # Generate each attribute value
         for att in att_list:
-            new_record[att] = 0
-        # Overwrite the attribute key
-        new_record['A1'] = random.randint(0, par_dict[INS])
-        # Deletion flag
-        new_record['OP'] = '-'
+            new_record[att] = key
+        # new_record['A1'] = key
         # Append record to list
         rec_list.append(new_record)
         # Update current key set
@@ -108,21 +116,21 @@ def store_records(rec_list, par_dict):
     Store a record list in into file
     '''
     # Check if record list is empty
-    if not len(rec_list):
+    if len(rec_list) == 0:
         return
     # Build attribute list including operation flag
     att_list = ['OP'] + \
         ['A' + str(number + 1) for number in range(par_dict[ATT])]
     # Open file
-    out_file = open(par_dict[FILE], 'w')
-    # Create csv writer
-    out_write = csv.DictWriter(out_file, att_list)
-    # Write file header
-    out_write.writeheader()
-    # Write records
-    out_write.writerows(rec_list)
-    # Close file
-    out_file.close()
+    with open(par_dict[FILE], 'w', encoding='utf-8') as out_file:
+        # Create csv writer
+        out_write = csv.DictWriter(out_file, att_list)
+        # Write file header
+        out_write.writeheader()
+        # Write records
+        out_write.writerows(rec_list)
+        # Close file
+        out_file.close()
 
 def gen_keys(par_dict):
     '''Generate keys'''
